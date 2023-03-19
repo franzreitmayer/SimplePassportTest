@@ -5,6 +5,7 @@ const { ensureLoggedIn } = require('connect-ensure-login');
 const auth = require("./auth");
 var cookieParser = require('cookie-parser');
 const session = require('express-session');
+const morgan = require('morgan');
 const app = express();
 app.use(cookieParser('secret'));
 
@@ -16,6 +17,7 @@ app.use(function() {
   });
 */
 
+app.use(morgan( 'combined', {immediate: true}));
 app.use(session({cookie: {maxAge: 6000}}));
 app.use(flash());
 
