@@ -15,11 +15,11 @@ const __dirname = path.dirname(__filename);
 // app.use(session({cookie: {maxAge: 6000}}));
 
 
+app.use(express.urlencoded({ extended: false }));
 
 auth(app);
 
 
-app.use(express.urlencoded({ extended: false }));
 app.use("/static", express.static(join(__dirname, "static")));
 app.use("/service", ensureLoggedIn('/static/login.html'), 
     (req, res) => {
