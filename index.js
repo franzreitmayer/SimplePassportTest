@@ -1,35 +1,25 @@
-const express = require('express');
-var flash = require('connect-flash');
-const path = require('path');
-const { ensureLoggedIn } = require('connect-ensure-login');
-const auth = require("./auth");
-var cookieParser = require('cookie-parser');
-const session = require('express-session');
+import express from 'express';
+import morgan from 'morgan';
+import path from 'path';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+import auth from './auth.js';
+import { ensureLoggedIn } from 'connect-ensure-login';
 const app = express();
-app.use(cookieParser('secret'));
 
-/*
-app.use(function() {
-    app.use(express.cookieParser('keyboard cat'));
-    app.use(express.session({ cookie: { maxAge: 60000 }}));
-    app.use(flash());
-  });
-*/
+const __filename = fileURLToPath(import.meta.url);
 
-app.use(session({cookie: {maxAge: 6000}}));
-app.use(flash());
+const __dirname = path.dirname(__filename);
 
-app.get('/flash', function(req, res){
-    req.flash('info', 'Flash is back!')
-    res.redirect('/');
-  });
+// app.use(session({cookie: {maxAge: 6000}}));
+
 
 
 auth(app);
 
 
-
-app.use("/static", express.static(path.join(__dirname, "static")));
+app.use(express.urlencoded({ extended: false }));
+app.use("/static", express.static(join(__dirname, "static")));
 app.use("/service", ensureLoggedIn('/static/login.html'), 
     (req, res) => {
         res.send("Hello World");
