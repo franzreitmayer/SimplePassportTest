@@ -1,26 +1,24 @@
 import express from 'express';
 import morgan from 'morgan';
-import path from 'path';
-import { join, dirname } from 'path';
+import { dirname } from 'path';
 import { fileURLToPath } from 'url';
+// import { router as movieRouter } from './movie/index.js';
 import auth from './auth.js';
 import { ensureLoggedIn } from 'connect-ensure-login';
 
 const app = express();
 
-const __filename = fileURLToPath(import.meta.url);
+app.use('/static', express.static(dirname(fileURLToPath(import.meta.url)) + '/static'));
 
-const __dirname = path.dirname(__filename);
+app.use(morgan('common', { immediate: true }));
 
-// app.use(session({cookie: {maxAge: 6000}}));
-
-
+app.use(express.urlencoded({ extended: false }));
 
 auth(app);
 
 
-app.use(express.urlencoded({ extended: false }));
-app.use("/static", express.static(join(__dirname, "static")));
+
+
 app.use("/service", ensureLoggedIn('/static/login.html'), 
     (req, res) => {
         res.send("Hello World");
