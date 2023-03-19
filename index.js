@@ -1,3 +1,5 @@
+import serverless from 'serverless-http';
+// import express from 'express';
 import express from 'express';
 import morgan from 'morgan';
 import path from 'path';
@@ -26,4 +28,9 @@ app.use("/service", ensureLoggedIn('/static/login.html'),
         res.send("Hello World");
     }
 );
-app.listen(8080);
+
+app.use("/test", (req, res) => {
+    res.send("Hello World!");
+});
+
+export function serverless(app);
