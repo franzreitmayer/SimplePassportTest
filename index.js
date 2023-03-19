@@ -5,6 +5,7 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import auth from './auth.js';
 import { ensureLoggedIn } from 'connect-ensure-login';
+
 const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
